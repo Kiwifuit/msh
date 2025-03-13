@@ -15,29 +15,5 @@ int main()
     exit(EXIT_FAILURE);
   }
 
-  printf("Enter text: ");
-  read_line(cmdline);
-
-  for (int i = 0; current_arg != NULL; i++)
-  {
-    current_arg = get_arg(cmdline);
-
-    if (current_arg == NULL)
-    {
-      break;
-    }
-
-    printf("[%d]:\t%s\n", i, current_arg);
-  }
-
-  printf("$PATH raw: %s\n", getenv("PATH"));
-  printf("$PATH dump:\n");
-  curr_path = get_path();
-  for (int i = 0; curr_path != NULL; i++)
-  {
-    printf("%d\t:%s\n", i, curr_path);
-    curr_path = get_path();
-  }
-
   cmd_free(cmdline);
 }
