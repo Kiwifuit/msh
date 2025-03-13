@@ -46,15 +46,16 @@ void cmd_free(Commandline *cmdline)
   free(cmdline);
 }
 
-void read_line(Commandline *cmdline)
+int read_line(Commandline *cmdline)
 {
   if (!fgets(cmdline->buf, IBUF_LEN, stdin))
   {
     perror("unable to read to stdin");
-    return;
+    return 1;
   }
 
   cmdline->buf[strcspn(cmdline->buf, "\n")] = 0;
+  return 0;
 }
 
 char *get_arg(Commandline *cmdline)
@@ -62,13 +63,13 @@ char *get_arg(Commandline *cmdline)
   if (cmdline->tok == NULL)
   {
     cmdline->tok = strdup(cmdline->buf);
-    return strtok(cmdline->tok, IBUF_DENY);
-  }
 
-  if (cmdline->tok == NULL)
-  {
-    printf("error: token was empty for some reason\n");
-    return NULL;
+    if (!cmdline->tok)
+    {
+      return NULL;
+    }
+
+    return strtok(cmdline->tok, IBUF_DENY);
   }
 
   return strtok(NULL, IBUF_DENY);
