@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <errno.h>
 
 struct cmd_t
 {
@@ -50,7 +51,9 @@ int read_line(Commandline *cmdline)
 {
   if (!fgets(cmdline->buf, IBUF_LEN, stdin))
   {
-    perror("unable to read to stdin");
+    if (!feof(stdin))
+      perror("unable to read to stdin");
+
     return 1;
   }
 

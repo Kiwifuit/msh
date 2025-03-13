@@ -7,13 +7,36 @@
 int main()
 {
   Commandline *cmdline = cmd_init();
-  char *current_arg, *curr_path = NULL;
+  char *executable, *current_arg;
 
   if (cmdline == NULL)
   {
     perror("failed to initialize tokenizer");
     exit(EXIT_FAILURE);
   }
+
+  do
+  {
+    printf("> ");
+
+    if (read_line(cmdline))
+    {
+      printf("\rexit\n");
+      break;
+    }
+
+    current_arg = get_arg(cmdline);
+    executable = current_arg;
+
+    // FIXME: This shit broken af :/
+    printf("Executable: %s\n", executable);
+    for (int i = 0; current_arg != NULL; i++)
+    {
+      current_arg = get_arg(cmdline);
+
+      printf("\t%-3d: %s\n", i, current_arg);
+    }
+  } while (1);
 
   cmd_free(cmdline);
 }
