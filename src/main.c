@@ -17,7 +17,7 @@ int main()
   printf("Enter text: ");
   read_line(cmdline);
 
-  do
+  for (int i = 0; current_arg != NULL; i++)
   {
     current_arg = get_arg(cmdline);
 
@@ -26,8 +26,8 @@ int main()
       break;
     }
 
-    printf("%s\n", current_arg);
-  } while (current_arg != NULL);
+    printf("[%d]:\t%s\n", i, current_arg);
+  }
 
   cmd_free(cmdline);
 }
