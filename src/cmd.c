@@ -57,6 +57,11 @@ int read_line(Commandline *cmdline)
     return 1;
   }
 
+  // After every line is read, whatever remains
+  // inside `tok` should be cleared
+  free(cmdline->tok);
+  cmdline->tok = NULL;
+
   cmdline->buf[strcspn(cmdline->buf, "\n")] = 0;
   return 0;
 }

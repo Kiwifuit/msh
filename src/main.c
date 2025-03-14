@@ -1,3 +1,8 @@
+// Configuration
+// ------------------
+// Input Buffer Length
+#define IBUF_LEN 256
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -33,6 +38,11 @@ int main()
     for (int i = 0; current_arg != NULL; i++)
     {
       current_arg = get_arg(cmdline);
+
+      // Sometimes this becomes NULL
+      // as this loop is executing
+      if (current_arg == NULL)
+        break;
 
       printf("\t%-3d: %s\n", i, current_arg);
     }
