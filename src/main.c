@@ -33,7 +33,6 @@ int main()
     current_arg = get_arg(cmdline);
     executable = current_arg;
 
-    // FIXME: This shit broken af :/
     printf("Executable: %s\n", executable);
     for (int i = 0; current_arg != NULL; i++)
     {
