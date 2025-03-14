@@ -2,11 +2,12 @@
 #include <stdlib.h>
 
 #include "cmd.h"
+#include "path.h"
 
 int main()
 {
   Commandline *cmdline = cmd_init();
-  char *current_arg;
+  char *current_arg, *curr_path = NULL;
 
   if (cmdline == NULL)
   {
@@ -17,7 +18,7 @@ int main()
   printf("Enter text: ");
   read_line(cmdline);
 
-  do
+  for (int i = 0; current_arg != NULL; i++)
   {
     current_arg = get_arg(cmdline);
 
@@ -26,8 +27,17 @@ int main()
       break;
     }
 
-    printf("%s\n", current_arg);
-  } while (current_arg != NULL);
+    printf("[%d]:\t%s\n", i, current_arg);
+  }
+
+  printf("$PATH raw: %s\n", getenv("PATH"));
+  printf("$PATH dump:\n");
+  curr_path = get_path();
+  for (int i = 0; curr_path != NULL; i++)
+  {
+    printf("%d\t:%s\n", i, curr_path);
+    curr_path = get_path();
+  }
 
   cmd_free(cmdline);
 }
