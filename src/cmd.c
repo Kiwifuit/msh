@@ -1,5 +1,5 @@
 #include "cmd.h"
-#include "tokenize.c"
+#include "tokenize.h"
 
 #define _XOPEN_SOURCE 500
 #define IBUF_DENY " "
