@@ -1,10 +1,11 @@
 #include "cmd.h"
+#include "tokenize.h"
 
 #define _XOPEN_SOURCE 500
 #define IBUF_DENY " "
 
 #ifndef IBUF_LEN
-#define IBUF_LEN 32
+#define IBUF_LEN 256
 #endif
 
 #include <stdlib.h>
@@ -62,14 +63,15 @@ char *get_arg(Commandline *cmdline)
   if (cmdline->tok == NULL)
   {
     cmdline->tok = strdup(cmdline->buf);
-    return strtok(cmdline->tok, IBUF_DENY);
+    return tokenize(cmdline->tok, IBUF_DENY);
   }
 
-  if (cmdline->tok == NULL)
-  {
-    printf("error: token was empty for some reason\n");
-    return NULL;
-  }
+  // tf why conditional statements the same as above?
+  // if (cmdline->tok == NULL)
+  // {
+  //   printf("error: token was empty for some reason\n");
+  //   return NULL;
+  // }
 
-  return strtok(NULL, IBUF_DENY);
+  return tokenize(NULL, IBUF_DENY);
 }
