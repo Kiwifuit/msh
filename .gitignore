@@ -4,4 +4,6 @@ CMakeCache.txt
 *.cmake
 Makefile
 *.exe
-.vscode
+.vscode/*
+msh
+.vscode/*.json
