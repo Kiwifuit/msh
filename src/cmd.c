@@ -47,6 +47,12 @@ void cmd_free(Commandline *cmdline)
   free(cmdline);
 }
 
+void cmd_tok_free(Commandline *cmdline) {
+  free(cmdline->tok);
+  cmdline->tok = NULL;
+  // printf("Command line tok is now free\n");
+}
+
 void read_line(Commandline *cmdline)
 {
   if (!fgets(cmdline->buf, IBUF_LEN, stdin))
