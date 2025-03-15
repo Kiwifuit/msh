@@ -15,29 +15,33 @@ int main()
     exit(EXIT_FAILURE);
   }
 
-  printf("Enter text: ");
-  read_line(cmdline);
-
-  for (int i = 0; current_arg != NULL; i++)
+  do
   {
-    current_arg = get_arg(cmdline);
+    printf("Enter text: ");
+    read_line(cmdline);
 
-    if (current_arg == NULL)
+    for (int i = 0; current_arg != NULL; i++)
     {
-      break;
+      current_arg = get_arg(cmdline);
+
+      if (current_arg == NULL)
+      {
+        break;
+      }
+
+      printf("[%d]:\t%s\n", i, current_arg);
     }
 
-    printf("[%d]:\t%s\n", i, current_arg);
-  }
-
-  printf("$PATH raw: %s\n", getenv("PATH"));
-  printf("$PATH dump:\n");
-  curr_path = get_path();
-  for (int i = 0; curr_path != NULL; i++)
-  {
-    printf("%d\t:%s\n", i, curr_path);
+    printf("$PATH raw: %s\n", getenv("PATH"));
+    printf("$PATH dump:\n");
     curr_path = get_path();
-  }
+    for (int i = 0; curr_path != NULL; i++)
+    {
+      printf("%d\t:%s\n", i, curr_path);
+      curr_path = get_path();
+    }
+
+  } while (1);
 
   cmd_free(cmdline);
 }
