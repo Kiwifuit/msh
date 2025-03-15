@@ -5,7 +5,7 @@
 #define IBUF_DENY " "
 
 #ifndef IBUF_LEN
-#define IBUF_LEN 32
+#define IBUF_LEN 256
 #endif
 
 #include <stdlib.h>
@@ -67,11 +67,11 @@ char *get_arg(Commandline *cmdline)
   }
 
   // tf why conditional statements the same as above?
-  if (cmdline->tok == NULL)
-  {
-    printf("error: token was empty for some reason\n");
-    return NULL;
-  }
+  // if (cmdline->tok == NULL)
+  // {
+  //   printf("error: token was empty for some reason\n");
+  //   return NULL;
+  // }
 
   return tokenize(NULL, IBUF_DENY);
 }
