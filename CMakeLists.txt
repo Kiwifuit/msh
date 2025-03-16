@@ -2,11 +2,17 @@ cmake_minimum_required(VERSION 3.20)
 
 project(msh VERSION 0.0.1)
 
-# set(IBUF_LEN "Input Buffer Length, in bytes" 256)
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(DEBUG ON)
+else()
+    set(DEBUG OFF)
+endif()
+
+# Project Configuration
 set(MSH_IBUF_LEN 256 CACHE STRING "Input buffer length")
+set(DEBUG ${DEBUG} CACHE BOOL "Debug mode")
 
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include)
-# Configure the header file
 configure_file(
   ${CMAKE_CURRENT_SOURCE_DIR}/include/config.h.in
   ${CMAKE_CURRENT_SOURCE_DIR}/include/config.h
