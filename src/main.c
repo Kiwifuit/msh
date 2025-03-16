@@ -21,7 +21,8 @@ int main()
     exit(EXIT_FAILURE);
   }
 
-  do
+    errno = 0;
+    do
   {
     printf("> ");
 
