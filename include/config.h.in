@@ -11,4 +11,4 @@
 #define GREETING PROJECT_NAME " v" PROJECT_VERSION "\n"
 
 // Input Buffer Length
-#define IBUF_LEN @IBUF_LEN@
+#define IBUF_LEN @MSH_IBUF_LEN@
