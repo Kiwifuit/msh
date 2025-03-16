@@ -17,8 +17,7 @@ int main()
     exit(EXIT_FAILURE);
   }
 
-    errno = 0;
-    do
+  do
   {
     errno = 0;
     printf("> ");
