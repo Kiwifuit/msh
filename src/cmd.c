@@ -128,3 +128,4 @@ void process_arg(Commandline *cmdline, char **executable)
 
     printf("\t%-3d: %s\n", i, current_arg);
   }
+}

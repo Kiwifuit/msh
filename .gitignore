@@ -7,3 +7,5 @@ Makefile
 .vscode/*
 msh
 .vscode/*.json
+
+/include/config.h
