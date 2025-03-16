@@ -9,7 +9,7 @@
 int main()
 {
   Commandline *cmdline = cmd_init();
-  char *executable, *current_arg, *path_dir = NULL;
+  char *executable = NULL;
 
   if (cmdline == NULL)
   {
@@ -28,38 +28,9 @@ int main()
       break;
     }
 
-    current_arg = get_arg(cmdline);
-    executable = current_arg;
-
-    if (executable == NULL)
-    {
-      continue;
-    }
-
-    printf("Executable: %s\n", executable);
-    for (int i = 0; current_arg != NULL; i++)
-    {
-      current_arg = get_arg(cmdline);
-
-      // Sometimes this becomes NULL
-      // as this loop is executing
-      if (current_arg == NULL)
-        break;
-
-      printf("\t%-3d: %s\n", i, current_arg);
-    }
-
-    printf("Searching $PATH for `%s`\n", executable);
-
-    do
-    {
-      path_dir = get_path();
-      if (path_dir == NULL)
-        break;
-
-      printf("\t%s\n", path_dir);
-    } while (path_dir != NULL);
-
+    process_arg(cmdline, &executable);
+    if (executable != NULL)
+      executable = search_executable(executable);
     if (errno)
     {
       perror("error while running");

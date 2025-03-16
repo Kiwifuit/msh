@@ -12,6 +12,8 @@
 #include <string.h>
 #include <errno.h>
 
+#include "path.h"
+
 struct cmd_t
 {
   char *buf;
@@ -81,4 +83,44 @@ char *get_arg(Commandline *cmdline)
   }
 
   return strtok(NULL, IBUF_DENY);
+}
+
+char *search_executable(const char *executable)
+{
+  char *path_dir = NULL;
+
+  printf("Searching $PATH for `%s`\n", executable);
+  do
+  {
+    path_dir = get_path();
+    if (path_dir == NULL)
+      break;
+
+    printf("\t%s\n", path_dir);
+  } while (path_dir != NULL);
+
+  // FIXME: This should return `executable`'s real path
+  return NULL;
+}
+
+void process_arg(Commandline *cmdline, char **executable)
+{
+  char *current_arg = get_arg(cmdline);
+
+  *executable = current_arg;
+  if (current_arg == NULL)
+    return;
+
+  printf("Executable: %s\n", *executable);
+  for (int i = 0; current_arg != NULL; i++)
+  {
+    current_arg = get_arg(cmdline);
+
+    // Sometimes this becomes NULL
+    // as this loop is executing
+    if (current_arg == NULL)
+      break;
+
+    printf("\t%-3d: %s\n", i, current_arg);
+  }
 }
