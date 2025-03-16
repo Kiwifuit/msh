@@ -1,13 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <errno.h>
 
+#include "config.h"
 #include "cmd.h"
 #include "path.h"
 
 int main()
 {
   Commandline *cmdline = cmd_init();
-  char *current_arg, *curr_path = NULL;
+  char *executable = NULL;
 
   if (cmdline == NULL)
   {
@@ -17,33 +19,22 @@ int main()
 
   do
   {
-    printf("Enter text: ");
-    read_line(cmdline);
-    
-    int i = 0;
-    do {
-      current_arg = get_arg(cmdline);
+    errno = 0;
+    printf("> ");
 
-      if (current_arg == NULL)
-      {
-        break;
-      }
+    if (read_line(cmdline))
+    {
+      printf("\rexit\n");
+      break;
+    }
 
-      printf("[%d]:\t%s\n", i, current_arg);
-
-      i++;
-    } while (current_arg != NULL);
-
-    // printf("$PATH raw: %s\n", getenv("PATH"));
-    // printf("$PATH dump:\n");
-    // curr_path = get_path();
-    // for (int i = 0; curr_path != NULL; i++)
-    // {
-    //   printf("%d\t:%s\n", i, curr_path);
-    //   curr_path = get_path();
-    // }
-
-    cmd_tok_free(cmdline);
+    process_arg(cmdline, &executable);
+    if (executable != NULL)
+      executable = search_executable(cmdline, executable);
+    if (errno)
+    {
+      perror("error while running");
+    }
   } while (1);
 
   cmd_free(cmdline);

@@ -4,6 +4,6 @@ typedef struct cmd_t Commandline;
 
 Commandline *cmd_init();
 void cmd_free(Commandline *arg);
-void cmd_tok_free(Commandline *cmdline);
-void read_line(Commandline *cmdline);
-char *get_arg(Commandline *cmdline);
+int read_line(Commandline *cmdline);
+char *search_executable(Commandline *cmdline, const char *executable);
+void process_arg(Commandline *cmdline, char **executable);
