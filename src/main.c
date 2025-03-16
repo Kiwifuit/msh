@@ -35,7 +35,6 @@ int main()
     {
       perror("error while running");
     }
-
   } while (1);
 
   cmd_free(cmdline);
