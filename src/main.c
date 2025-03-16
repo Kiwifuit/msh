@@ -17,6 +17,7 @@ int main()
     exit(EXIT_FAILURE);
   }
 
+  printf(GREETING);
   do
   {
     errno = 0;
