@@ -1,1 +1,1 @@
-char *get_path();
+char **init_path(void);
