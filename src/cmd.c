@@ -18,6 +18,7 @@ struct cmd_t
 {
   char *buf;
   char *tok;
+  char **bin_dirs;
 };
 
 Commandline *cmd_init()
@@ -37,6 +38,8 @@ Commandline *cmd_init()
     return NULL;
   }
 
+  args->bin_dirs = init_path();
+
   return args;
 }
 
@@ -46,6 +49,7 @@ void cmd_free(Commandline *cmdline)
     free(cmdline->tok);
 
   free(cmdline->buf);
+  free(cmdline->bin_dirs);
   free(cmdline);
 }
 
@@ -85,18 +89,20 @@ char *get_arg(Commandline *cmdline)
   return strtok(NULL, IBUF_DENY);
 }
 
-char *search_executable(const char *executable)
+char *search_executable(Commandline *cmdline, const char *executable)
 {
   char *path_dir = NULL;
 
   printf("Searching $PATH for `%s`\n", executable);
+  // FIXME: This shouldn't remain here, only for debugging purposes
+  int pathno = 0;
   do
   {
-    path_dir = get_path();
-    if (path_dir == NULL)
-      break;
+    printf("[%3d]", pathno);
+    path_dir = cmdline->bin_dirs[++pathno];
 
-    printf("\t%s\n", path_dir);
+    if (path_dir)
+      printf("\t%s\n", path_dir);
   } while (path_dir != NULL);
 
   // FIXME: This should return `executable`'s real path

@@ -31,7 +31,7 @@ int main()
 
     process_arg(cmdline, &executable);
     if (executable != NULL)
-      executable = search_executable(executable);
+      executable = search_executable(cmdline, executable);
     if (errno)
     {
       perror("error while running");
