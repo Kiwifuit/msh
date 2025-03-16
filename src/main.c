@@ -1,12 +1,8 @@
-// Configuration
-// ------------------
-// Input Buffer Length
-#define IBUF_LEN 256
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
 
+#include "config.h"
 #include "cmd.h"
 #include "path.h"
 
