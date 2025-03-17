@@ -20,7 +20,6 @@ int main()
   do
   {
     errno = 0;
-    printf("> ");
 
     if (read_line(cmdline))
     {

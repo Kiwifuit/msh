@@ -1,6 +1,5 @@
 #include "cmd.h"
 
-#define _XOPEN_SOURCE 500
 #define IBUF_DENY " "
 
 #ifndef IBUF_LEN
@@ -10,7 +9,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <errno.h>
 
+#include <readline/readline.h>
+#include <readline/history.h>
+// #include <readline/
+
+#include "tokenize.h"
 #include "path.h"
 
 struct cmd_t
@@ -29,46 +34,56 @@ Commandline *cmd_init()
     return NULL;
   }
 
-  args->buf = (char *)malloc(IBUF_LEN);
+  // args->buf = (char *)malloc(IBUF_LEN);
+  args->buf = NULL;
   args->tok = NULL;
 
-  if (args->buf == NULL)
-  {
-    return NULL;
-  }
-
   args->bin_dirs = init_path();
+
+  using_history();
+  if (read_history(".msh_history") && errno != ENOENT)
+    perror("unable to fetch history");
 
   return args;
 }
 
 void cmd_free(Commandline *cmdline)
 {
-  if (cmdline->tok != NULL)
+  if (cmdline->tok)
     free(cmdline->tok);
+  if (cmdline->buf)
+    free(cmdline->buf);
 
-  free(cmdline->buf);
   free(cmdline->bin_dirs);
   free(cmdline);
 }
 
 int read_line(Commandline *cmdline)
 {
-  if (!fgets(cmdline->buf, IBUF_LEN, stdin))
+  if (cmdline->buf)
   {
-    if (!feof(stdin))
-      perror("unable to read to stdin");
-
-    return 1;
+    free(cmdline->buf);
   }
 
-  // After every line is read, whatever remains
-  // inside `tok` should be cleared
-  free(cmdline->tok);
-  cmdline->tok = NULL;
+  if (cmdline->tok)
+  {
+    // After every line is read, whatever remains
+    // inside `tok` should be cleared
+    free(cmdline->tok);
+    cmdline->tok = NULL;
+  }
 
-  cmdline->buf[strcspn(cmdline->buf, "\n")] = 0;
-  return 0;
+  cmdline->buf = readline("> ");
+  if (cmdline->buf)
+  {
+    char *history = strdup(cmdline->buf);
+
+    add_history(history);
+
+    free(history);
+    return 0;
+  }
+  return 1;
 }
 
 char *get_arg(Commandline *cmdline)
@@ -85,6 +100,7 @@ char *get_arg(Commandline *cmdline)
     return strtok(cmdline->tok, IBUF_DENY);
   }
 
+  // return tokenize(cmdline->buf, IBUF_DENY);
   return strtok(NULL, IBUF_DENY);
 }
 
@@ -128,3 +144,4 @@ void process_arg(Commandline *cmdline, char **executable)
 
     printf("\t%-3d: %s\n", i, current_arg);
   }
+}

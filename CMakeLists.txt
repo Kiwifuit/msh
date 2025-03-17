@@ -10,6 +10,6 @@ include_directories(include/)
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${READLINE_INCLUDE_DIRS})
-target_link_libraries(${PROJECT_NAME} PRIVATE ${READLINE_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} PRIVATE ${READLINE_LIBRARIES} history)
 target_compile_options(${PROJECT_NAME} PRIVATE ${READLINE_CFLAGS_OTHER})
 
