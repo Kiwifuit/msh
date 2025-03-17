@@ -1,0 +1,19 @@
+// Configuration
+// ------------------
+// Configuration by editing this file is highly
+// discouraged. Please use `cmake` to configure
+// values for msh
+
+#pragma once
+
+// Project metadata
+#define PROJECT_VERSION "@CMAKE_PROJECT_VERSION@"
+#define PROJECT_NAME "@PROJECT_NAME@"
+#define GREETING PROJECT_NAME " v" PROJECT_VERSION "\n"
+
+// Input Buffer Length
+#define IBUF_LEN @MSH_IBUF_LEN@
+
+// Whether or not `cmake` will make a debug
+// executable
+#cmakedefine DEBUG
