@@ -13,7 +13,6 @@ int main()
 
   if (cmdline == NULL)
   {
-    cmd_free(cmdline);
     perror("failed to initialize tokenizer");
     exit(EXIT_FAILURE);
   }
