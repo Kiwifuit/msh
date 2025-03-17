@@ -13,6 +13,7 @@ endif()
 
 # Project Configuration
 set(DEBUG ${DEBUG} CACHE BOOL "Debug mode")
+set(MSH_HISTFILE "~/.msh_history" CACHE STRING "Path to msh's history file")
 
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include)
 configure_file(

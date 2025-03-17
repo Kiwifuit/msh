@@ -14,3 +14,6 @@
 // Whether or not `cmake` will make a debug
 // executable
 #cmakedefine DEBUG
+
+// Path to the histfile
+#define HISTFILE "@MSH_HISTFILE@"
