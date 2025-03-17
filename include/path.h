@@ -1,1 +1,1 @@
-char **init_path(void);
+char **init_path(char *path_dup);

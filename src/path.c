@@ -29,13 +29,13 @@ void copy_paths(char *path, char **paths)
   paths[indx] = NULL;
 }
 
-char **init_path(void)
+char **init_path(char *path_dup)
 {
   char *path = getenv("PATH");
   if (!path)
     return NULL;
 
-  char *path_dup = strdup(path);
+  path_dup = strdup(path);
   if (!path_dup)
     return NULL;
 
@@ -48,6 +48,5 @@ char **init_path(void)
   }
 
   copy_paths(path_dup, paths);
-  free(path_dup);
   return paths;
 }

@@ -23,6 +23,7 @@ struct cmd_t
   char *buf;
   char *tok;
   char **bin_dirs;
+  char *path_buf;
 };
 
 Commandline *cmd_init()
@@ -38,7 +39,7 @@ Commandline *cmd_init()
   args->buf = NULL;
   args->tok = NULL;
 
-  args->bin_dirs = init_path();
+  args->bin_dirs = init_path(args->path_buf);
 
   using_history();
   if (read_history(".msh_history") && errno != ENOENT)
@@ -54,6 +55,7 @@ void cmd_free(Commandline *cmdline)
   if (cmdline->buf)
     free(cmdline->buf);
 
+  free(cmdline->path_buf);
   free(cmdline->bin_dirs);
   free(cmdline);
 }
@@ -63,6 +65,7 @@ int read_line(Commandline *cmdline)
   if (cmdline->buf)
   {
     free(cmdline->buf);
+    cmdline->buf = NULL;
   }
 
   if (cmdline->tok)
