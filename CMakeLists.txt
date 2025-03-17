@@ -12,7 +12,6 @@ else()
 endif()
 
 # Project Configuration
-set(MSH_IBUF_LEN 256 CACHE STRING "Input buffer length")
 set(DEBUG ${DEBUG} CACHE BOOL "Debug mode")
 
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include)
