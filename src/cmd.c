@@ -2,18 +2,14 @@
 
 #define IBUF_DENY " "
 
-#ifndef HISTFILE
-#define HISTFILE ".msh_history"
-#endif
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
 
 #include <readline/readline.h>
-#include <readline/history.h>
 
+#include "history.h"
 #include "tokenize.h"
 #include "path.h"
 
@@ -54,10 +50,6 @@ Commandline *cmd_init()
 
   args->bin_dirs = init_path(args->path_buf);
 
-  using_history();
-  if (read_history(HISTFILE) && errno != ENOENT)
-    perror("unable to fetch history");
-
   return args;
 }
 
@@ -69,8 +61,7 @@ void cmd_free(Commandline *cmdline)
   free(cmdline->bin_dirs);
   free(cmdline);
 
-  if (write_history(HISTFILE))
-    perror("unable to save history");
+  end_history();
 }
 
 int read_line(Commandline *cmdline)
@@ -81,10 +72,8 @@ int read_line(Commandline *cmdline)
   clear_input(cmdline);
 
   cmdline->buf = readline("> ");
-  if (cmdline->buf && *cmdline->buf)
-  {
-    add_history(cmdline->buf);
-  }
+
+  add_entry(cmdline->buf);
 
   if (cmdline->buf)
     return 0;
