@@ -2,10 +2,6 @@
 
 #define IBUF_DENY " "
 
-#ifndef IBUF_LEN
-#define IBUF_LEN 32
-#endif
-
 #ifndef HISTFILE
 #define HISTFILE ".msh_history"
 #endif
