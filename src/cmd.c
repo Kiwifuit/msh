@@ -17,7 +17,6 @@
 
 #include <readline/readline.h>
 #include <readline/history.h>
-// #include <readline/
 
 #include "tokenize.h"
 #include "path.h"
