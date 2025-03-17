@@ -1,16 +1,16 @@
 #include "cmd.h"
 
-#define _XOPEN_SOURCE 500
 #define IBUF_DENY " "
-
-#ifndef IBUF_LEN
-#define IBUF_LEN 32
-#endif
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <errno.h>
 
+#include <readline/readline.h>
+
+#include "history.h"
+#include "tokenize.h"
 #include "path.h"
 
 struct cmd_t
@@ -18,7 +18,22 @@ struct cmd_t
   char *buf;
   char *tok;
   char **bin_dirs;
+  char *path_buf;
 };
+
+void clear_input(Commandline *cmdline)
+{
+  if (cmdline->tok)
+  {
+    free(cmdline->tok);
+    cmdline->tok = NULL;
+  }
+  if (cmdline->buf)
+  {
+    free(cmdline->buf);
+    cmdline->buf = NULL;
+  }
+}
 
 Commandline *cmd_init()
 {
@@ -29,46 +44,40 @@ Commandline *cmd_init()
     return NULL;
   }
 
-  args->buf = (char *)malloc(IBUF_LEN);
+  // args->buf = (char *)malloc(IBUF_LEN);
+  args->buf = NULL;
   args->tok = NULL;
 
-  if (args->buf == NULL)
-  {
-    return NULL;
-  }
-
-  args->bin_dirs = init_path();
+  args->bin_dirs = init_path(args->path_buf);
 
   return args;
 }
 
 void cmd_free(Commandline *cmdline)
 {
-  if (cmdline->tok != NULL)
-    free(cmdline->tok);
+  clear_input(cmdline);
 
-  free(cmdline->buf);
+  free(cmdline->path_buf);
   free(cmdline->bin_dirs);
   free(cmdline);
+
+  end_history();
 }
 
 int read_line(Commandline *cmdline)
 {
-  if (!fgets(cmdline->buf, IBUF_LEN, stdin))
-  {
-    if (!feof(stdin))
-      perror("unable to read to stdin");
-
-    return 1;
-  }
-
   // After every line is read, whatever remains
-  // inside `tok` should be cleared
-  free(cmdline->tok);
-  cmdline->tok = NULL;
+  // inside `tok` and `buf` should be cleared
+  // and reset
+  clear_input(cmdline);
 
-  cmdline->buf[strcspn(cmdline->buf, "\n")] = 0;
-  return 0;
+  cmdline->buf = readline("> ");
+
+  add_entry(cmdline->buf);
+
+  if (cmdline->buf)
+    return 0;
+  return 1;
 }
 
 char *get_arg(Commandline *cmdline)
@@ -85,6 +94,7 @@ char *get_arg(Commandline *cmdline)
     return strtok(cmdline->tok, IBUF_DENY);
   }
 
+  // return tokenize(cmdline->buf, IBUF_DENY);
   return strtok(NULL, IBUF_DENY);
 }
 

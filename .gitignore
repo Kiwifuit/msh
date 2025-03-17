@@ -1,11 +1,2 @@
 build/
-CMakeFiles
-CMakeCache.txt
-*.cmake
-Makefile
-*.exe
-.vscode/*
-msh
-.vscode/*.json
-
 /include/config.h
