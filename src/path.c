@@ -29,24 +29,24 @@ void copy_paths(char *path, char **paths)
   paths[indx] = NULL;
 }
 
-char **init_path(char *path_dup)
+char **init_path(char *full_path)
 {
   char *path = getenv("PATH");
   if (!path)
     return NULL;
 
-  path_dup = strdup(path);
-  if (!path_dup)
+  full_path = strdup(path);
+  if (!full_path)
     return NULL;
 
-  size_t sep_count = count_seps(path_dup);
+  size_t sep_count = count_seps(full_path);
   char **paths = (char **)malloc((sep_count + 1) * sizeof(char *));
   if (!paths)
   {
-    free(path_dup);
+    free(full_path);
     return NULL;
   }
 
-  copy_paths(path_dup, paths);
+  copy_paths(full_path, paths);
   return paths;
 }
