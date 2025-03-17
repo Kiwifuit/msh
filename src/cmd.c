@@ -25,6 +25,20 @@ struct cmd_t
   char *path_buf;
 };
 
+void clear_input(Commandline *cmdline)
+{
+  if (cmdline->tok)
+  {
+    free(cmdline->tok);
+    cmdline->tok = NULL;
+  }
+  if (cmdline->buf)
+  {
+    free(cmdline->buf);
+    cmdline->buf = NULL;
+  }
+}
+
 Commandline *cmd_init()
 {
   Commandline *args = (Commandline *)malloc(sizeof(Commandline));
@@ -49,10 +63,7 @@ Commandline *cmd_init()
 
 void cmd_free(Commandline *cmdline)
 {
-  if (cmdline->tok)
-    free(cmdline->tok);
-  if (cmdline->buf)
-    free(cmdline->buf);
+  clear_input(cmdline);
 
   free(cmdline->path_buf);
   free(cmdline->bin_dirs);
@@ -64,19 +75,10 @@ void cmd_free(Commandline *cmdline)
 
 int read_line(Commandline *cmdline)
 {
-  if (cmdline->buf)
-  {
-    free(cmdline->buf);
-    cmdline->buf = NULL;
-  }
-
-  if (cmdline->tok)
-  {
-    // After every line is read, whatever remains
-    // inside `tok` should be cleared
-    free(cmdline->tok);
-    cmdline->tok = NULL;
-  }
+  // After every line is read, whatever remains
+  // inside `tok` and `buf` should be cleared
+  // and reset
+  clear_input(cmdline);
 
   cmdline->buf = readline("> ");
   if (cmdline->buf && *cmdline->buf)
